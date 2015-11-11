@@ -37,14 +37,19 @@ public class Transform {
 	}
 
 	public AffineTransform getAffineTransform() {
-		AffineTransform translated = AffineTransform.getTranslateInstance(position.x, position.y);
-		AffineTransform transleteI = AffineTransform.getTranslateInstance(-position.x, -position.y);
-		AffineTransform scaled = AffineTransform.getScaleInstance(scaling.x, scaling.y);
-		AffineTransform rotated = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.x, position.y);
+		AffineTransform translate = AffineTransform.getTranslateInstance(position.x, position.y);
+		AffineTransform translateI = AffineTransform.getTranslateInstance(-position.x, -position.y);
+		AffineTransform scale = AffineTransform.getScaleInstance(scaling.x, scaling.y);
+		AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.x, position.y);
 //		AffineTransform res = new AffineTransform();
 //		res.concatenate(scaled);
 //		res.concatenate(rotated);
-		return rotated;
+		rotate.concatenate(translate);
+		rotate.concatenate(scale);
+		//rotate.concatenate(translateI);
+//		AffineTransform translate2 = AffineTransform.getTranslateInstance(position.x,position.y);
+//		translate2.concatenate(rotate);
+		return rotate;
 	}
 	
 	public Transform clone(){

@@ -15,10 +15,7 @@ public class Rect extends Figure{
 		Graphics2D g2d = (Graphics2D)component.getGraphics();
 		AffineTransform ord = g2d.getTransform();
 		
-		int w = (int)(width * t.scaling.x);
-		int h = (int)(length * t.scaling.y);
-		g2d.setTransform(t.getAffineTransform());
-		g2d.drawRect((int)(t.position.x - w / 2), (int)(t.position.y - h), w, h);
+		g2d.drawRect(- width / 2, - length, width, length);
 		
 		g2d.setTransform(ord);
 	}

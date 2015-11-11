@@ -125,13 +125,13 @@ public class MainApplet extends Applet{
 				true);
 		flower.generate(3);
 		fractal = new Fractal(
-				new Transform(new Vec2(500,900),0,0.75f),
-				standardTree,
+				new Transform(new Vec2(500,900),45,1f),
+				binTree,
 				rect,
 				true
 				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(4);
+		fractal.generate(15);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		

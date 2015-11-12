@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import figure.Figure;
 import transform.*;
+import java.awt.Color;
 
 public class FractalElem {
 	public Transform absTransform;
@@ -22,22 +23,28 @@ public class FractalElem {
 	private static List<Future<?>> futures = new ArrayList<Future<?>>();
 	
 	private int depth;
+	private int parentDepth;
+	private Color color;
+	
 	private int childs;
 	
 	static {
 		pool = Executors.newSingleThreadExecutor();//newWorkStealingPool();//Executors.newFixedThreadPool(cores);
 	}
-	public FractalElem(Transform t, FractalRules inirules, int depth) {
+	public FractalElem(Transform t, FractalRules inirules, int depth, int parent, Color c) {
 		absTransform = t;
 		rules = inirules;
 		this.depth = depth;
+		parentDepth = parent;
 		children = new ArrayList<FractalElem>();
+		color = c;
 	}
 	
 	public int createChild(){
+		Color childColor = getChildColor();
 		for(Transform rel : rules.elems){
 			Transform childTransform = getChildTransform(rel);
-			children.add(new FractalElem(childTransform, rules, depth + 1));
+			children.add(new FractalElem(childTransform, rules, depth + 1, parentDepth, childColor));
 		}
 		return children.size();
 	}
@@ -58,7 +65,21 @@ public class FractalElem {
 		Scaling sca = Scaling.add(absTransform.scaling, relTransform.scaling);
 		return new Transform(pos,rot,sca);
 	}
-	public void createChild(int depth){
+	private Color getChildColor(){
+		float x = (float)depth / parentDepth;
+		Color root = rules.rootColor;
+		Color end = rules.endColor;
+		return new Color(
+				lerp(root.getRed(),end.getRed(),x),
+				lerp(root.getGreen(),end.getGreen(),x),
+				lerp(root.getBlue(),end.getBlue(),x)
+				);
+	}
+	private int lerp(int y1, int y2, float x){
+		return (int)(y1 + (y2 - y1) * x);
+	}
+	public void createChild(int depth, int parentDepth){
+		this.parentDepth = parentDepth;
 		if(depth == 1){
 			createChild();
 			childs = children.size();
@@ -67,7 +88,7 @@ public class FractalElem {
 			childs = children.size();
 			depth--;
 			for(FractalElem child : children){
-				child.createChild(depth);
+				child.createChild(depth, parentDepth);
 				childs += child.childs;
 			}
 		}
@@ -119,6 +140,8 @@ public class FractalElem {
 //		updateTransform(dt, pivot);
 	}
 	public void draw(Graphics g, Figure base, figure.Drawable end){
+		Color ord = g.getColor();
+		g.setColor(color);
 		if(hasChild()){
 			base.draw(g, absTransform);
 
@@ -142,6 +165,7 @@ public class FractalElem {
 		}else{
 			end.draw(g, absTransform);
 		}
+		g.setColor(ord);
 	}
 	private boolean isHeavyJob(){
 		return false;//rules.getLength() > 1 && depth == 7;

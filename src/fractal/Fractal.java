@@ -1,5 +1,6 @@
 package fractal;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +29,7 @@ public class Fractal implements Drawable{
 		}
 		if(!drawRoot)
 			rootTransform.position = Vec2.add(rootTransform.position, new Vec2(0,baseFigure.length));
-		root = new FractalElem(rootTransform, rules, 0);
+		root = new FractalElem(rootTransform, rules, 0, 1, rules.rootColor);
 	}
 	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, boolean drawRoot){
 		this(rootTransform,inirules,base,base,drawRoot);
@@ -37,7 +38,7 @@ public class Fractal implements Drawable{
 	public void generate(int depth){
 		if(root.hasChild())
 			root.clearChild();
-		root.createChild(depth);
+		root.createChild(depth, depth);
 		currentDepth = depth;
 	}
 	public void generate(){

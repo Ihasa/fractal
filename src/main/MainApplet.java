@@ -1,6 +1,7 @@
 package main;
 
 import java.applet.Applet;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -85,6 +86,7 @@ public class MainApplet extends Applet{
 		FractalRules uzu = new FractalRules(
 				new Transform(new Vec2(0,-1),20,0.99f));
 		FractalRules standardTree = new FractalRules(
+				new Color(224, 64, 0),Color.GREEN,
 				new Transform(new Vec2(0,-0.5f),-45,0.5f),
 				new Transform(new Vec2(0,-0.75f),45,0.5f),
 				new Transform(new Vec2(0,-1),0,0.75f)

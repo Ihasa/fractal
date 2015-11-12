@@ -6,6 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -124,10 +126,12 @@ public class MainApplet extends Applet{
 				tri2,circle,
 				true);
 		flower.generate(4);
+		FractalRules nCircle = new FractalRules(
+				new Transform(new Vec2(0,-0.1f),0,0.8f));
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
-				binTree,
-				rect,flower,
+				standardTree,
+				rect,oval,
 				true
 				);
 		LocalDateTime t1 = LocalDateTime.now();
@@ -138,9 +142,13 @@ public class MainApplet extends Applet{
 		this.addMouseListener(new MouseAdapter(){
 			private Vec2 prev;
 			public void mousePressed(MouseEvent e){
-				prev = new Vec2(e.getX(),e.getY());
-				if(e.isShiftDown())
-					fractal.generate();
+				if(e.isControlDown())
+					screenShot();
+				else{
+					prev = new Vec2(e.getX(),e.getY());
+					if(e.isShiftDown())
+						fractal.generate();
+				}
 			}
 			public void mouseReleased(MouseEvent e){
 				Vec2 move = new Vec2(e.getX() - prev.x,e.getY() - prev.y);
@@ -165,5 +173,33 @@ public class MainApplet extends Applet{
 		//FractalElem.await();
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("drawed : " + Duration.between(t1, t2));
+	}
+	private void screenShot(){
+		java.awt.image.BufferedImage ss = new java.awt.image.BufferedImage(
+				this.getWidth(),
+				this.getHeight(),
+				java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
+		
+		Graphics g = ss.getGraphics();
+		g.setColor(java.awt.Color.WHITE);
+		g.fillRect(0,0,this.getWidth(),this.getHeight());
+		g.setColor(java.awt.Color.BLACK);
+		fractal.draw(g);
+		String timeStamp = System.currentTimeMillis() + "";
+		try {
+			String dirname = "C:\\Users\\kitch_000\\Pictures\\fractal";
+			File dir = new File(dirname);
+			if(!dir.exists())
+				dir.mkdir();
+			StringBuilder sb = new StringBuilder();
+			sb.append(dirname).append("\\img").append(timeStamp).append(".png");
+			File file = new File(sb.toString());
+			file.createNewFile();
+			javax.imageio.ImageIO.write(ss,"PNG",file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("saved");
 	}
 }

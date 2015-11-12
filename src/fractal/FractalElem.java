@@ -1,5 +1,6 @@
 package fractal;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -117,16 +118,16 @@ public class FractalElem {
 //		Vec2 pivot = absTransform.position.clone();
 //		updateTransform(dt, pivot);
 	}
-	public void draw(Figure base, figure.Drawable end){
+	public void draw(Graphics g, Figure base, figure.Drawable end){
 		if(hasChild()){
-			base.draw(absTransform);
+			base.draw(g, absTransform);
 
 			if(isHeavyJob()){
 				//スレッドプール形式
 				for(int i = 0; i < children.size(); i++){
 					FractalElem e = children.get(i);
 					futures.add(pool.submit(()->{
-						e.draw(base, end);
+						e.draw(g, base, end);
 					}));
 //					pool.execute(()->{
 //						e.draw(base, end);
@@ -135,7 +136,7 @@ public class FractalElem {
 			}else{
 				//逐次実行形式
 				for(FractalElem child : children){
-					child.draw(base, end);
+					child.draw(g, base, end);
 				}
 			}
 			//いちいちスレッド作る形式
@@ -153,11 +154,11 @@ public class FractalElem {
 //			}
 //			}catch(Exception e){}			
 		}else{
-			end.draw(absTransform);
+			end.draw(g, absTransform);
 		}
 	}
 	private boolean isHeavyJob(){
-		return rules.getLength() > 1 && depth == 5;
+		return rules.getLength() > 1 && depth == 7;
 	}
 	public static void await(){
 		for(Future<?> f : futures){

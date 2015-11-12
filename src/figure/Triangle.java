@@ -1,5 +1,6 @@
 package figure;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
@@ -18,8 +19,8 @@ public class Triangle extends Figure {
 	}
 	
 	@Override
-	public void draw(Transform t) {
-		Graphics2D g2d = (Graphics2D)component.getGraphics();
+	public void draw(Graphics g, Transform t) {
+		Graphics2D g2d = (Graphics2D)g;
 		AffineTransform ord = g2d.getTransform();
 		g2d.setTransform(t.getAffineTransform());
 		

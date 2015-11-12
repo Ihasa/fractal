@@ -14,8 +14,7 @@ public class Line extends Figure {
 		this(l,-90);
 	}
 	@Override
-	public void draw(Transform t) {
-		Graphics g = component.getGraphics();
+	public void draw(Graphics g,Transform t) {
 		float x = t.position.x + (float)(t.scaling.x * length * Math.cos(Math.PI * (dir + t.rotation) / 180));
 		float y = t.position.y + (float)(t.scaling.y * length * Math.sin(Math.PI * (dir + t.rotation) / 180));
 		

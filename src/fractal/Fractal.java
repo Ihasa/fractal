@@ -1,5 +1,6 @@
 package fractal;
 
+import java.awt.Graphics;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,20 +44,20 @@ public class Fractal implements Drawable{
 		generate(currentDepth);
 	}
 	
-	public synchronized void draw(Transform t){
+	public synchronized void draw(Graphics g, Transform t){
 //		root.absTransform = t;
 //		root.clearChild();
 //		generate(currentDepth);
 		root.updateTransform(t);
-		draw();
+		draw(g);
 	}
-	public void draw(){
+	public void draw(Graphics g){
 		if(drawRoot){
-			root.draw(baseFigure, endFigure);
+			root.draw(g, baseFigure, endFigure);
 		}
 		else{
 			for(FractalElem e : root.children){
-				e.draw(baseFigure,endFigure);
+				e.draw(g, baseFigure,endFigure);
 			}
 		}
 	}

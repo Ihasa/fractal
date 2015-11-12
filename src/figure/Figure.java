@@ -11,5 +11,4 @@ public abstract class Figure implements Drawable{
 	}
 	
 	public static Component component;
-	public abstract void draw(Transform t);
 }

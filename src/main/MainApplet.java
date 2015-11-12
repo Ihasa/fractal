@@ -121,17 +121,17 @@ public class MainApplet extends Applet{
 		Fractal flower = new Fractal(
 				new Transform(new Vec2(0,0),0,0.5f),
 				binTree,//new FractalRules(new Transform(new Vec2(0,-0.1f),0,0.8f)),
-				l,circle,
+				tri2,circle,
 				true);
-		flower.generate(3);
+		flower.generate(4);
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
 				binTree,
-				image,
+				rect,flower,
 				true
 				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(15);
+		fractal.generate(10);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		
@@ -162,7 +162,7 @@ public class MainApplet extends Applet{
 	public void paint(Graphics g){
 		LocalDateTime t1 = LocalDateTime.now();
 		fractal.draw(g);
-		FractalElem.await();
+		//FractalElem.await();
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("drawed : " + Duration.between(t1, t2));
 	}

@@ -138,27 +138,13 @@ public class FractalElem {
 				for(FractalElem child : children){
 					child.draw(g, base, end);
 				}
-			}
-			//いちいちスレッド作る形式
-//			Thread[] th = new Thread[children.size()];
-//			for(int i = 0; i < children.size(); i++){
-//				FractalElem e = children.get(i);
-//				th[i] = new Thread(()->{
-//					e.draw(base, end);
-//				});
-//				th[i].start();
-//			}
-//			try{
-//			for(int i = 0; i < children.size(); i++){
-//				th[i].join();
-//			}
-//			}catch(Exception e){}			
+			}			
 		}else{
 			end.draw(g, absTransform);
 		}
 	}
 	private boolean isHeavyJob(){
-		return rules.getLength() > 1 && depth == 7;
+		return false;//rules.getLength() > 1 && depth == 7;
 	}
 	public static void await(){
 		for(Future<?> f : futures){

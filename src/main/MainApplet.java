@@ -127,7 +127,7 @@ public class MainApplet extends Applet{
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
 				binTree,
-				rect,
+				image,
 				true
 				);
 		LocalDateTime t1 = LocalDateTime.now();

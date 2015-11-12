@@ -13,14 +13,13 @@ public class Oval extends Figure{
 		width = w;
 	}
 	@Override
-	public void draw(Graphics g, Transform t) {
+	public synchronized void draw(Graphics g, Transform t) {
 		Graphics2D g2d = (Graphics2D)g;
 		AffineTransform ord = g2d.getTransform();
 		g2d.setTransform(t.getAffineTransform());
-		int w = (int)(width * t.scaling.x);
-		int h = (int)(length * t.scaling.y);
-		g2d.drawOval((int)(t.position.x - w / 2), (int)(t.position.y - h), w, h);
+
+		g2d.drawOval(- width / 2, - length, width, length);
+		
 		g2d.setTransform(ord);
-	}
-	
+	}	
 }

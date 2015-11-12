@@ -24,14 +24,12 @@ public class Image extends Figure{
 		}
 	}
 	@Override
-	public void draw(Graphics g, Transform t) {
+	public synchronized void draw(Graphics g, Transform t) {
 		Graphics2D g2d = (Graphics2D)g;
 		AffineTransform ord = g2d.getTransform();
 		
-		int w = (int)(width * t.scaling.x);
-		int h = (int)(length * t.scaling.y);
 		g2d.setTransform(t.getAffineTransform());
-		g2d.drawImage(img, (int)(t.position.x - w / 2), (int)(t.position.y - h), w, h,component);
+		g2d.drawImage(img, -width / 2, -length, width, length, component);
 		g2d.setTransform(ord);		
 	}
 

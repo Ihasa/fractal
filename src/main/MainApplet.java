@@ -60,8 +60,8 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2((float)Math.sqrt(3) / 6,0),0,0.5f),
 				new Transform(new Vec2((float)-Math.sqrt(3) / 6,0),0,0.5f)
 				);
-		Figure tri = new Triangle(200,(int)(Math.sqrt(3) * 100),true);
-		Figure tri2 = new Triangle(50,200);
+		Figure tri = new Triangle(200,(int)(Math.sqrt(3) * 100));
+		Figure tri2 = new Triangle(50,200,true);
 		
 		FractalRules tforce2 = new FractalRules(
 				new Transform(new Vec2(0,(int)(Math.sqrt(3) * 400)),180,0.5f));
@@ -86,7 +86,6 @@ public class MainApplet extends Applet{
 		FractalRules uzu = new FractalRules(
 				new Transform(new Vec2(0,-1),20,0.99f));
 		FractalRules standardTree = new FractalRules(
-				new Color(224, 64, 0),Color.GREEN,
 				new Transform(new Vec2(0,-0.5f),-45,0.5f),
 				new Transform(new Vec2(0,-0.75f),45,0.5f),
 				new Transform(new Vec2(0,-1),0,0.75f)
@@ -126,16 +125,30 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2(0,0),0,0.5f),
 				binTree,//new FractalRules(new Transform(new Vec2(0,-0.1f),0,0.8f)),
 				tri2,circle,
+				Color.ORANGE, Color.MAGENTA,
 				true);
 		flower.generate(4);
 		FractalRules nCircle = new FractalRules(
-				new Transform(new Vec2(0,-0.1f),0,0.8f));
+				new Transform(new Vec2(0,-0.05f),0,0.9f));
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
 				standardTree,
 				rect,oval,
+				new Color(192,64,0),new Color(32,192,32),
 				true
 				);
+//		fractal = new Fractal(
+//				new Transform(new Vec2(500,900),0,1f),
+//				tforce,
+//				tri,face,
+//				false
+//				);
+//		fractal = new Fractal(
+//				new Transform(new Vec2(500,900),0,1f),
+//				nCircle,
+//				circle,face,
+//				true
+//				);
 		LocalDateTime t1 = LocalDateTime.now();
 		fractal.generate(10);
 		LocalDateTime t2 = LocalDateTime.now();

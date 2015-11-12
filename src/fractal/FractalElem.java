@@ -40,8 +40,8 @@ public class FractalElem {
 		color = c;
 	}
 	
-	public int createChild(){
-		Color childColor = getChildColor();
+	public int createChild(Color root, Color end){
+		Color childColor = getChildColor(root, end);
 		for(Transform rel : rules.elems){
 			Transform childTransform = getChildTransform(rel);
 			children.add(new FractalElem(childTransform, rules, depth + 1, parentDepth, childColor));
@@ -65,10 +65,8 @@ public class FractalElem {
 		Scaling sca = Scaling.add(absTransform.scaling, relTransform.scaling);
 		return new Transform(pos,rot,sca);
 	}
-	private Color getChildColor(){
+	private Color getChildColor(Color root, Color end){
 		float x = (float)depth / parentDepth;
-		Color root = rules.rootColor;
-		Color end = rules.endColor;
 		return new Color(
 				lerp(root.getRed(),end.getRed(),x),
 				lerp(root.getGreen(),end.getGreen(),x),
@@ -78,17 +76,17 @@ public class FractalElem {
 	private int lerp(int y1, int y2, float x){
 		return (int)(y1 + (y2 - y1) * x);
 	}
-	public void createChild(int depth, int parentDepth){
+	public void createChild(int depth, int parentDepth, Color root, Color end){
 		this.parentDepth = parentDepth;
 		if(depth == 1){
-			createChild();
+			createChild(root, end);
 			childs = children.size();
 		} else if(depth > 0){
-			createChild();
+			createChild(root, end);
 			childs = children.size();
 			depth--;
 			for(FractalElem child : children){
-				child.createChild(depth, parentDepth);
+				child.createChild(depth, parentDepth, root, end);
 				childs += child.childs;
 			}
 		}

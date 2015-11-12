@@ -18,9 +18,13 @@ public class Fractal implements Drawable{
 	private Drawable endFigure;
 	private int currentDepth;
 	private boolean drawRoot;
-	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, Drawable end, boolean drawRoot) {
+	private Color rootColor;
+	private Color endColor;
+	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, Drawable end, Color rootColor, Color endColor, boolean drawRoot) {
 		baseFigure = base;
 		endFigure = end;
+		this.rootColor = rootColor;
+		this.endColor = endColor;
 		this.drawRoot = drawRoot;
 
 		FractalRules rules = inirules.clone();
@@ -29,16 +33,28 @@ public class Fractal implements Drawable{
 		}
 		if(!drawRoot)
 			rootTransform.position = Vec2.add(rootTransform.position, new Vec2(0,baseFigure.length));
-		root = new FractalElem(rootTransform, rules, 0, 1, rules.rootColor);
+		root = new FractalElem(rootTransform, rules, 0, 1, rootColor);
 	}
 	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, boolean drawRoot){
-		this(rootTransform,inirules,base,base,drawRoot);
+		this(rootTransform,inirules,base,base,Color.GRAY,Color.GRAY,drawRoot);
 	}
-
+	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, Figure end, boolean drawRoot){
+		this(rootTransform,inirules,base,end,Color.GRAY,Color.GRAY,drawRoot);
+	}
+	public Fractal(Transform rootTransform, FractalRules inirules, Figure base,Color c, boolean drawRoot){
+		this(rootTransform,inirules,base,base,c,c,drawRoot);
+	}
+	public Fractal(Transform rootTransform, FractalRules inirules, Figure base, Figure end,Color c, boolean drawRoot){
+		this(rootTransform,inirules,base,end,c,c,drawRoot);
+	}
+	public Fractal(Transform rootTransform, FractalRules inirules, Figure base,Color rootColor,Color endColor, boolean drawRoot){
+		this(rootTransform,inirules,base,base,rootColor,endColor,drawRoot);
+	}//そういえばコンストラクタ派生機能ってない？
+	
 	public void generate(int depth){
 		if(root.hasChild())
 			root.clearChild();
-		root.createChild(depth, depth);
+		root.createChild(depth, depth, rootColor, endColor);
 		currentDepth = depth;
 	}
 	public void generate(){

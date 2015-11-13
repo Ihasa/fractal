@@ -66,7 +66,7 @@ public class FractalElem {
 		return new Transform(pos,rot,sca);
 	}
 	private Color getChildColor(Color root, Color end){
-		float x = (float)depth / parentDepth;
+		float x = (float)(depth+1) / parentDepth;
 		return new Color(
 				lerp(root.getRed(),end.getRed(),x),
 				lerp(root.getGreen(),end.getGreen(),x),

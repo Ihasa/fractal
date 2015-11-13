@@ -3,6 +3,7 @@ package main;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -137,36 +138,41 @@ public class MainApplet extends Applet{
 		tf.generate(10);
 		FractalRules nCircle = new FractalRules(
 				new Transform(new Vec2(0,-0.05f),0,0.9f));
-//		fractal = new Fractal(
-//				new Transform(new Vec2(500,900),0,1f),
-//				standardTree,
-//				rect,oval,
-//				new Color(192,64,0),new Color(32,192,32),
-//				true
-//				);
+		fractal = new Fractal(
+				new Transform(new Vec2(500,900),0,1f),
+				standardTree,
+				rect,oval,
+				new Color(192,64,0),new Color(32,192,32),
+				true
+				);
 //		fractal = new Fractal(
 //				new Transform(new Vec2(500,900),0,1f),
 //				tforce,
 //				tri,face,
 //				false
 //				);
-		fractal = new Fractal(
-				new Transform(new Vec2(500,900),0,1f),
-				nCircle,
-				circle,tf,
-				Color.RED,new Color(0,255,255),
-				true
-				);
+//		fractal = new Fractal(
+//				new Transform(new Vec2(500,900),0,1f),
+//				nCircle,
+//				circle,face,
+//				Color.RED,Color.BLACK,
+//				true
+//				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(70);
+		fractal.generate(9);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		
 		this.addMouseListener(new MouseAdapter(){
 			private Vec2 prev;
 			public void mousePressed(MouseEvent e){
-				if(e.isControlDown())
-					screenShot();
+				if(e.isControlDown()){
+					if(e.isShiftDown()){
+						toImage();
+					}
+					else
+						screenShot();
+				}
 				else{
 					prev = new Vec2(e.getX(),e.getY());
 					if(e.isShiftDown())
@@ -177,25 +183,65 @@ public class MainApplet extends Applet{
 				Vec2 move = new Vec2(e.getX() - prev.x,e.getY() - prev.y);
 				fractal.setRootPosition(move);
 				repaint();
+				area = fractal.getBounds();
 			}
 		});
 		this.addMouseWheelListener(new MouseWheelListener(){
-
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent me) {
 				float amount = 1 - me.getWheelRotation() * 0.5f;
 				fractal.scaling(amount, new Vec2(me.getX(), me.getY()));
 				repaint();
+				area = fractal.getBounds();
 			}
 		});
-
+		area = fractal.getBounds();
 	}
+	Rectangle area;
 	public void paint(Graphics g){
 		LocalDateTime t1 = LocalDateTime.now();
 		fractal.draw(g);
 		//FractalElem.await();
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("drawed : " + Duration.between(t1, t2));
+		Color ord = g.getColor();
+		g.setColor(Color.RED);
+		g.drawRect(area.x, area.y, area.width, area.height);
+		g.setColor(Color.BLACK);
+		g.drawString(area.width + " * " + area.height, 0, 20);
+		g.setColor(ord);
+	}
+	private void toImage(){
+		Rectangle r = fractal.getBounds();
+		java.awt.image.BufferedImage ss = new java.awt.image.BufferedImage(
+				r.width,
+				r.height,
+				java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
+		
+		Transform t = fractal.getRootTransform();
+		t.position = new Vec2(r.width / 2, r.height);
+		
+		Graphics g = ss.getGraphics();
+		g.setColor(java.awt.Color.WHITE);
+		g.fillRect(0,0,r.width,r.height);
+		g.setColor(java.awt.Color.BLACK);
+		fractal.draw(g, t);
+		String timeStamp = System.currentTimeMillis() + "";
+		try {
+			String dirname = "C:\\Users\\kitch_000\\Pictures\\fractal";
+			File dir = new File(dirname);
+			if(!dir.exists())
+				dir.mkdir();
+			StringBuilder sb = new StringBuilder();
+			sb.append(dirname).append("\\img").append(timeStamp).append(".png");
+			File file = new File(sb.toString());
+			file.createNewFile();
+			javax.imageio.ImageIO.write(ss,"PNG",file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("saved!!");		
 	}
 	private void screenShot(){
 		java.awt.image.BufferedImage ss = new java.awt.image.BufferedImage(

@@ -1,6 +1,7 @@
 package fractal;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -10,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import figure.Drawable;
 import figure.Figure;
 import transform.*;
 import java.awt.Color;
@@ -178,5 +180,40 @@ public class FractalElem {
 			}
 		}
 		futures.clear();
+	}
+	
+	public Rectangle getBounds(Figure base, Drawable end){
+		Rectangle r = base.getBounds(absTransform);
+		return getBounds(base, end, new Vec2(r.x,r.y),new Vec2(r.x + r.width, r.y + r.height));
+	}
+	public Rectangle getBounds(Figure base, Drawable end, Vec2 min, Vec2 max){
+		//Rectangle r = base.getBounds(absTransform);//hasChild() ? base.getBounds() : end.getBounds();		
+		Rectangle current = base.getBounds(absTransform);//hasChild() ? base.getBounds() : end.getBounds();		
+//		if(current.x < min.x)
+//			min.x = current.x;
+//		else if(current.x > max.x)
+//			max.x = current.x;
+//		
+//		if(current.y < min.y)
+//			min.y = current.y;
+//		else if(current.y > max.y)
+//			max.y = current.y;
+		updateMinMax(current, min, max);
+		for(FractalElem e : children){
+			Rectangle r2 = e.getBounds(base, end, min, max);
+			updateMinMax(r2,min,max);
+		}
+		return new Rectangle((int)min.x, (int)min.y, (int)(max.x - min.x), (int)(max.y - min.y));
+	}
+	private void updateMinMax(Rectangle current, Vec2 min, Vec2 max){
+		if(current.x < min.x)
+			min.x = current.x;
+		else if(current.x + current.width > max.x)
+			max.x = current.x + current.width;
+		
+		if(current.y < min.y)
+			min.y = current.y;
+		else if(current.y + current.height > max.y)
+			max.y = current.y + current.height;
 	}
 }

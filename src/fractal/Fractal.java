@@ -2,6 +2,7 @@ package fractal;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -92,7 +93,12 @@ public class Fractal implements Drawable{
 	public void rotate(float angle, Vec2 pivot){
 		root.updateTransform(new Transform(new Vec2(0,0),angle, 1), pivot);
 	}
-	
+	public Rectangle getBounds(){
+		return root.getBounds(baseFigure, endFigure);
+	}
+	public Transform getRootTransform(){
+		return root.absTransform.clone();
+	}
 //	private Vec2 getPivot() {
 //		Vec2 pivot = root.absTransform.position;
 //		if(!drawRoot){

@@ -3,6 +3,8 @@ package figure;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 
 import transform.Transform;
 
@@ -21,5 +23,11 @@ public class Oval extends Figure{
 		g2d.drawOval(- width / 2, - length, width, length);
 		
 		g2d.setTransform(ord);
+	}
+	
+	@Override
+	protected Path2D getPath(Transform t) {
+		Ellipse2D ellipse = new Ellipse2D.Float(-width / 2, -length, width, length);
+		return new Path2D.Float(ellipse, t.getAffineTransform());
 	}	
 }

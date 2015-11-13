@@ -1,6 +1,7 @@
 package figure;
 
 import java.awt.Graphics;
+import java.awt.geom.Path2D;
 
 import transform.Transform;
 
@@ -20,5 +21,12 @@ public class Line extends Figure {
 		
 		g.drawLine((int)t.position.x, (int)t.position.y, (int)x, (int)y);
 	}
-
+	@Override
+	protected Path2D getPath(Transform t) {
+		Path2D res = new Path2D.Float();
+		res.moveTo(0,0);
+		res.lineTo(0, -length);
+		res.transform(t.getAffineTransform());
+		return res;
+	}
 }

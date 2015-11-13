@@ -2,6 +2,7 @@ package figure;
 
 import transform.Transform;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.*;
 
 public class Rect extends Figure{
@@ -19,5 +20,11 @@ public class Rect extends Figure{
 		g2d.drawRect(- width / 2, - length, width, length);
 		
 		g2d.setTransform(ord);
+	}
+
+	@Override
+	protected Path2D getPath(Transform t) {
+		Rectangle rect = new Rectangle(-width / 2, -length, width, length);
+		return new Path2D.Float(rect, t.getAffineTransform());
 	}
 }

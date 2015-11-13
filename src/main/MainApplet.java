@@ -60,7 +60,7 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2((float)Math.sqrt(3) / 6,0),0,0.5f),
 				new Transform(new Vec2((float)-Math.sqrt(3) / 6,0),0,0.5f)
 				);
-		Figure tri = new Triangle(200,(int)(Math.sqrt(3) * 100));
+		Figure tri = new Triangle((int)(200 / Math.sqrt(3) * 2),200);
 		Figure tri2 = new Triangle(50,200,true);
 		
 		FractalRules tforce2 = new FractalRules(
@@ -113,6 +113,7 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2(0.3f,0),0,0.4f),
 				new Transform(new Vec2(0.3f,-0.6f),0,0.4f)
 				);
+		Figure arrow = new Arrow(200);
 		Figure circle = new Oval(200,200);
 		Image image = new Image(44, 285,"eda.png");
 		Image face = new Image(200,200,"face.png");
@@ -128,29 +129,36 @@ public class MainApplet extends Applet{
 				Color.ORANGE, Color.MAGENTA,
 				true);
 		flower.generate(4);
+		Fractal tf = new Fractal(
+				new Transform(new Vec2(0,0),0,0.7f),
+				tforce,
+				tri,
+				false);
+		tf.generate(10);
 		FractalRules nCircle = new FractalRules(
 				new Transform(new Vec2(0,-0.05f),0,0.9f));
-		fractal = new Fractal(
-				new Transform(new Vec2(500,900),0,1f),
-				standardTree,
-				rect,oval,
-				new Color(192,64,0),new Color(32,192,32),
-				true
-				);
+//		fractal = new Fractal(
+//				new Transform(new Vec2(500,900),0,1f),
+//				standardTree,
+//				rect,oval,
+//				new Color(192,64,0),new Color(32,192,32),
+//				true
+//				);
 //		fractal = new Fractal(
 //				new Transform(new Vec2(500,900),0,1f),
 //				tforce,
 //				tri,face,
 //				false
 //				);
-//		fractal = new Fractal(
-//				new Transform(new Vec2(500,900),0,1f),
-//				nCircle,
-//				circle,face,
-//				true
-//				);
+		fractal = new Fractal(
+				new Transform(new Vec2(500,900),0,1f),
+				nCircle,
+				circle,tf,
+				Color.RED,new Color(0,255,255),
+				true
+				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(10);
+		fractal.generate(70);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		

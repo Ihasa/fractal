@@ -174,8 +174,8 @@ public class MainApplet extends Applet{
 				);
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
-				toge,
-				rect,
+				dragon2,
+				l,
 				false
 				);
 //		fractal = new Fractal(
@@ -199,7 +199,7 @@ public class MainApplet extends Applet{
 //				true
 //				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(6);
+		fractal.generate(8);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		
@@ -264,7 +264,7 @@ public class MainApplet extends Applet{
 				java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
 		
 		Transform t = fractal.getRootTransform();
-		t.position = new Vec2(r.width / 2, r.height);
+		t.position = Vec2.sub(t.position, new Vec2(r.x, r.y));
 		
 		Graphics g = ss.getGraphics();
 		g.setColor(java.awt.Color.WHITE);

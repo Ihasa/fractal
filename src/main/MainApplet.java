@@ -138,13 +138,53 @@ public class MainApplet extends Applet{
 		tf.generate(10);
 		FractalRules nCircle = new FractalRules(
 				new Transform(new Vec2(0,-0.05f),0,0.9f));
+		Figure dragonBase = new Triangle(200, 100, true);
+		FractalRules dragon = new FractalRules(
+				new Transform(new Vec2(-1f,0),45,1.4142f * 0.5f),
+				new Transform(new Vec2(0,-1f),135, 1.4142f * 0.5f)
+				);
+		FractalRules dragon2 = new FractalRules(
+				new Transform(new Vec2(0,0),90,0.5f),
+				new Transform(new Vec2(0.5f,-0.5f),180,0.5f),
+				new Transform(new Vec2(0.5f,-0.5f),-90,0.5f),
+				new Transform(new Vec2(0,-1f),180,0.5f)
+				);
+		FractalRules toge = new FractalRules(
+				new Transform(new Vec2(0,0),0,0.333f),
+				new Transform(new Vec2(0,-0.333f),-60,0.333f),
+				new Transform(new Vec2(-0.333f * 0.866f, -0.333f - 0.1666f),60,0.333f),
+				new Transform(new Vec2(0,-0.333f - 0.1666f * 2),0,0.333f)
+				);
+		FractalRules snow = new FractalRules(
+				new Transform(new Vec2(0,0),180,0.3333f),
+				new Transform(new Vec2(0.5f / 1.73f,-0.5f),60,0.3333f),
+				new Transform(new Vec2(-0.5f / 1.73f,-0.5f),-60,0.3333f)
+				);
+		Fractal cohho = new Fractal(
+				new Transform(),
+				toge,
+				l,
+				false
+				);
+		cohho.generate(2);
+		FractalRules triangle = new FractalRules(
+				new Transform(new Vec2(0,0),30,1),
+				new Transform(new Vec2(0,0),-270,1),
+				new Transform(new Vec2(0.5f,-0.861f),150,1)
+				);
 		fractal = new Fractal(
 				new Transform(new Vec2(500,900),0,1f),
-				standardTree,
-				rect,oval,
-				new Color(192,64,0),new Color(32,192,32),
-				true
+				toge,
+				rect,
+				false
 				);
+//		fractal = new Fractal(
+//				new Transform(new Vec2(500,900),0,1f),
+//				standardTree,
+//				rect,oval,
+//				new Color(192,64,0),new Color(32,192,32),
+//				true
+//				);
 //		fractal = new Fractal(
 //				new Transform(new Vec2(500,900),0,1f),
 //				tforce,
@@ -159,7 +199,7 @@ public class MainApplet extends Applet{
 //				true
 //				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(9);
+		fractal.generate(6);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		
@@ -189,8 +229,13 @@ public class MainApplet extends Applet{
 		this.addMouseWheelListener(new MouseWheelListener(){
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent me) {
-				float amount = 1 - me.getWheelRotation() * 0.5f;
-				fractal.scaling(amount, new Vec2(me.getX(), me.getY()));
+				if(me.isControlDown()){
+					float angle = -2 * me.getWheelRotation();
+					fractal.rotate(angle, new Vec2(me.getX(), me.getY()));//fractal.getRootTransform().position);
+				}else{
+					float amount = 1 - me.getWheelRotation() * 0.5f;
+					fractal.scaling(amount, new Vec2(me.getX(), me.getY()));					
+				}
 				repaint();
 				area = fractal.getBounds();
 			}

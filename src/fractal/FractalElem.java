@@ -42,13 +42,12 @@ public class FractalElem {
 		color = c;
 	}
 	
-	public int createChild(Color root, Color end){
+	public void createChild(Color root, Color end){
 		Color childColor = getChildColor(root, end);
 		for(Transform rel : rules.elems){
 			Transform childTransform = getChildTransform(rel);
 			children.add(new FractalElem(childTransform, rules, depth + 1, parentDepth, childColor));
 		}
-		return children.size();
 	}
 	private Transform getChildTransform(Transform relTransform){
 		Vec2 pos = Vec2.add(

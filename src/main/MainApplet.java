@@ -18,7 +18,7 @@ import fractal.*;
 import transform.*;
 
 public class MainApplet extends Applet{
-	Fractal fractal;
+	Fractal2 fractal;
 
 	public void init(){
 		Figure.component = this;
@@ -160,7 +160,7 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2(0.5f / 1.73f,-0.5f),60,0.3333f),
 				new Transform(new Vec2(-0.5f / 1.73f,-0.5f),-60,0.3333f)
 				);
-		Fractal cohho = new Fractal(
+		Fractal2 cohho = new Fractal2(
 				new Transform(),
 				toge,
 				l,
@@ -172,7 +172,7 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2(0,0),-270,1),
 				new Transform(new Vec2(0.5f,-0.861f),150,1)
 				);
-		fractal = new Fractal(
+		fractal = new Fractal2(
 				new Transform(new Vec2(500,900),0,1f),
 				dragon2,
 				l,

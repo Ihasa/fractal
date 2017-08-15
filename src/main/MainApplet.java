@@ -18,7 +18,7 @@ import fractal.*;
 import transform.*;
 
 public class MainApplet extends Applet{
-	Fractal2 fractal;
+	Fractal fractal;
 
 	public void init(){
 		Figure.component = this;
@@ -116,7 +116,7 @@ public class MainApplet extends Applet{
 				);
 		Figure arrow = new Arrow(200);
 		Figure circle = new Oval(200,200);
-		Image image = new Image(44, 285,"eda.png");
+		Image image = new Image(68, 84,"saru.png");
 		Image face = new Image(200,200,"face.png");
 		Diamond diamond = new Diamond(50,200);
 		FractalRules tritri = new FractalRules(
@@ -172,10 +172,64 @@ public class MainApplet extends Applet{
 				new Transform(new Vec2(0,0),-270,1),
 				new Transform(new Vec2(0.5f,-0.861f),150,1)
 				);
-		fractal = new Fractal2(
-				new Transform(new Vec2(500,900),0,1f),
-				dragon2,
-				l,
+
+		Scaling red = new Scaling(0.11764f, 0.11804f);
+		Scaling green = new Scaling(0.0735f, 0.08333f);
+		FractalRules saru = new FractalRules(
+				new Transform(new Vec2(0,0),0,red),
+				new Transform(new Vec2(0,-0.11904f),0,red),
+				new Transform(new Vec2(0,-0.11904f*2),0,red),
+				new Transform(new Vec2(0,-0.11904f*3),0,red),
+				new Transform(new Vec2(0,-0.11904f*4),0,red),
+				new Transform(new Vec2(0,-0.11904f*5),0,red),
+				new Transform(new Vec2(0,-0.11904f*6),0,red),
+				new Transform(new Vec2(0,-0.11904f*7),0,red),
+		
+				new Transform(new Vec2(0.41741f,-0.11904f*2),0,red),
+				new Transform(new Vec2(0.41741f,-0.11904f*3),0,red),
+				new Transform(new Vec2(0.41741f,-0.11904f*4),0,red),
+				new Transform(new Vec2(0.41741f,-0.11904f*5),0,red),
+				new Transform(new Vec2(0.41741f,-0.11904f*6),0,red),
+
+				new Transform(new Vec2(-0.41741f,-0.11904f*2),0,red),
+				new Transform(new Vec2(-0.41741f,-0.11904f*3),0,red),
+				new Transform(new Vec2(-0.41741f,-0.11904f*4),0,red),
+				new Transform(new Vec2(-0.41741f,-0.11904f*5),0,red),
+				new Transform(new Vec2(-0.41741f,-0.11904f*6),0,red),
+
+				new Transform(new Vec2(0.10295f, -0.29761f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 1, -0.29761f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 2, -0.29761f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 3, -0.29761f),0,green),
+				new Transform(new Vec2(-0.10295f, -0.29761f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 1), -0.29761f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 2), -0.29761f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 3), -0.29761f),0,green),
+
+				new Transform(new Vec2(0.10295f, -0.5238f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 1, -0.5238f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 2, -0.5238f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 3, -0.5238f),0,green),
+				new Transform(new Vec2(-0.10295f, -0.5238f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 1), -0.5238f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 2), -0.5238f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 3), -0.5238f),0,green),
+
+				new Transform(new Vec2(0.10295f, -0.75f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 1, -0.75f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 2, -0.75f),0,green),
+				new Transform(new Vec2(0.10295f+0.0735f * 3, -0.75f),0,green),
+				new Transform(new Vec2(-0.10295f, -0.75f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 1), -0.75f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 2), -0.75f),0,green),
+				new Transform(new Vec2(-(0.10295f+0.0735f * 3), -0.75f),0,green)
+				);
+		
+		
+		fractal = new Fractal(
+				new Transform(new Vec2(500,400),0,20f),
+				saru,
+				image,
 				false
 				);
 //		fractal = new Fractal(
@@ -199,7 +253,7 @@ public class MainApplet extends Applet{
 //				true
 //				);
 		LocalDateTime t1 = LocalDateTime.now();
-		fractal.generate(8);
+		fractal.generate(2);
 		LocalDateTime t2 = LocalDateTime.now();
 		System.out.println("generated : " + Duration.between(t1, t2));
 		
